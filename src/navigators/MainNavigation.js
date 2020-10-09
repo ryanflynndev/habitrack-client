@@ -9,8 +9,10 @@ import { Entypo } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
 import TimeSpentScreen from '../screens/TimeSpentScreen';
 import LoginScreen from '../screens/LoginScreen'
+import API from '../constants/Api'
 
 const Tab = createBottomTabNavigator();
+
 
 class MainNavigation extends React.Component {
 
@@ -20,26 +22,37 @@ class MainNavigation extends React.Component {
     }
 
     componentDidMount() {
-        fetch('http://localhost:3000/users')
+        fetch(`${API}/users`)
         .then(response => response.json())
-        .then(users => console.log(users))
+        .then(users => {
+            this.setState({
+                users: users
+            })
+        })
         .catch(function(error) {
             console.log('There has been a problem with your fetch operation: ' + error.message);
-             // ADD THIS THROW error
-            throw error;
+            throw error
             });
     }
 
-    loginHandler = () => {
-
+    loginHandler = (text) => {
+        let found = this.state.users.find(user => user.username === text)
+        console.log(found)
+        if(found){
+            this.setState({
+                user: found
+            })
+        }
+        
     }
 
     render() {
+        console.log(this.state.users)
         return (
             <>
                 { this.state.user ? (<NavigationContainer>
                             <Tab.Navigator initialRouteName="Home">
-                                <Tab.Screen name="Home" component={HomeScreen}  options={{
+                                <Tab.Screen name="Home" children={() => <HomeScreen user={this.state.user}/>}  options={{
                                 tabBarLabel: 'Home',
                                 tabBarIcon: () => (
                                 <MaterialCommunityIcons name="home-circle" size={32} color= "#834bff" />
@@ -58,7 +71,7 @@ class MainNavigation extends React.Component {
                                 ),
                             }} />
                             </Tab.Navigator>
-                        </NavigationContainer>) : <LoginScreen/>
+                        </NavigationContainer>) : <LoginScreen loginHandler={this.loginHandler}/>
                 }
             </>
         );

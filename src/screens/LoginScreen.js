@@ -23,6 +23,7 @@ class LoginScreen extends React.Component {
                 />
                 <Button 
                     title="Log in" 
+                    onPress={() => this.props.loginHandler(this.state.username)}
                     />
             </View>
         )

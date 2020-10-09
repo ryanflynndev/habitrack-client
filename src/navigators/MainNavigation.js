@@ -37,7 +37,6 @@ class MainNavigation extends React.Component {
 
     loginHandler = (text) => {
         let found = this.state.users.find(user => user.username === text)
-        console.log(found)
         if(found){
             this.setState({
                 user: found
@@ -47,7 +46,7 @@ class MainNavigation extends React.Component {
     }
 
     render() {
-        console.log(this.state.users)
+
         return (
             <>
                 { this.state.user ? (<NavigationContainer>

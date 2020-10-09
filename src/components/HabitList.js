@@ -1,5 +1,6 @@
 import React from 'react'
-import { Text, View, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
+
 
 
 const HABITS = [
@@ -21,16 +22,21 @@ class HabitList extends React.Component {
                     }}
                     data={HABITS}
                     renderItem={({item}) => {
-                        return <Text>{item.title}</Text>
+                        return <Text style={styles.habitStyle}>{item.title}</Text>
                     }}
                 />
+                <TextInput/>
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-
+    habitStyle: {
+        marginLeft: 20,
+        marginTop: 10,
+        fontSize: 32
+    }
 })
 
 export default HabitList

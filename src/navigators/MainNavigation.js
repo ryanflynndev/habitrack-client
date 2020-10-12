@@ -76,7 +76,7 @@ class MainNavigation extends React.Component {
                                 <Entypo name="calendar" size={32} color="#834bff" />
                                 ),
                             }} />
-                                <Tab.Screen name="Time Spent" component={TimeSpentScreen}  options={{
+                                <Tab.Screen name="Time Spent" children={() => <TimeSpentScreen user={this.state.user}/>}  options={{
                                 tabBarLabel: 'Time Spent',
                                 tabBarIcon: () => (
                                 <AntDesign name="clockcircle" size={32} color="#834bff" />

@@ -4,21 +4,7 @@ import API from '../constants/Api'
 
 class StreakScreen extends React.Component {
 
-    state = {
-        user: this.props.user
-    }
 
-    componentDidMount () {
-        fetch(`${API}/users/${this.props.user.id}`)
-        .then(response => response.json())
-        .then(user => {
-            if(theUser) {
-                this.setState({
-                    user: theUser
-                })
-            }
-        })
-    }
 
     render () {
         return(
@@ -28,7 +14,7 @@ class StreakScreen extends React.Component {
                     keyExtractor={(habit) => {
                         return `${habit.id}`
                     }}
-                    data={this.state.user.habits}
+                    data={this.props.user.habits}
                     renderItem={({item}) => {
                         return (
                             <View style={styles.viewStyle}>

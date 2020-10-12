@@ -45,13 +45,26 @@ class MainNavigation extends React.Component {
         
     }
 
+    userUpdateHandler = (userObj) => {
+        fetch(`${API}/users/${userObj.id}`)
+        .then(response => response.json())
+        .then(theUser => {
+            console.log(theUser)
+            if(theUser) {
+                this.setState({
+                    user: theUser.user
+                })
+            }
+        })
+    }
+
     render() {
 
         return (
             <>
                 { this.state.user ? (<NavigationContainer>
                             <Tab.Navigator initialRouteName="Home">
-                                <Tab.Screen name="Home" children={() => <HomeScreen user={this.state.user}/>}  options={{
+                                <Tab.Screen name="Home" children={() => <HomeScreen user={this.state.user} userUpdateHandler={this.userUpdateHandler}/>}  options={{
                                 tabBarLabel: 'Home',
                                 tabBarIcon: () => (
                                 <MaterialCommunityIcons name="home-circle" size={32} color= "#834bff" />

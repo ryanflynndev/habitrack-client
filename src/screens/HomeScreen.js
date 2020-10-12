@@ -106,7 +106,13 @@ class HomeScreen extends React.Component {
                 run_streak: habit.run_streak + 1,
                 time_spent: habit.time_spent + habit.minutes
             })            
-        }).then(response => response.json())    
+        }).then(response => response.json())
+        .then(updatedHabit => {
+            if(updatedHabit){
+                console.log(this.props.user.id)
+                this.props.userUpdateHandler(this.props.user)
+            }
+        })    
     }
 
 

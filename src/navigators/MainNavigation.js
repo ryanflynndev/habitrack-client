@@ -57,7 +57,7 @@ class MainNavigation extends React.Component {
                                 <MaterialCommunityIcons name="home-circle" size={32} color= "#834bff" />
                                 ),
                             }} />
-                                <Tab.Screen name="Streak" component={StreakScreen}  options={{
+                                <Tab.Screen name="Streak" children={() => <StreakScreen user={this.state.user}/>}  options={{
                                 tabBarLabel: 'Streaks',
                                 tabBarIcon: () => (
                                 <Entypo name="calendar" size={32} color="#834bff" />

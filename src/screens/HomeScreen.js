@@ -10,7 +10,8 @@ class HomeScreen extends React.Component {
     state = {
         habits: this.props.user.habits,
         showTimer: false,
-        timerHabit: {}
+        timedHabit: {},
+        timedHabits: []
     }
 
     createHandler = (habitObj) => {
@@ -84,22 +85,35 @@ class HomeScreen extends React.Component {
         let previousState = this.state.showTimer
         this.setState({
             showTimer: !previousState,
-            timerHabit: habit
+            timedHabit: habit
         })
     }
 
     endOfTimerHandler = (habit) => {
         let previousState = this.state.showTimer
+        let newArray = [...this.state.timedHabits, habit]
         this.setState({
-            showTimer: !previousState
+            showTimer: !previousState,
+            timedHabits: newArray
         })
+        fetch(`${API}/habits/${habit.id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                accepts: 'application/json'
+            },
+            body: JSON.stringify({
+                run_streak: habit.run_streak + 1,
+                time_spent: habit.time_spent + habit.minutes
+            })            
+        }).then(response => response.json())    
     }
 
 
     render () {
         return(
             <View>
-                { this.state.showTimer ? <Timer habit={this.state.timerHabit} endOfTimerHandler={this.endOfTimerHandler}/> : <View>
+                { this.state.showTimer ? <Timer habit={this.state.timedHabit} endOfTimerHandler={this.endOfTimerHandler}/> : <View>
                     <Text style={styles.textStyle}>We are in the home screen!</Text>
                     <CreateForm user={this.props.user} createHandler={this.createHandler}/>
                     <HabitList user={this.props.user} habits={this.state.habits} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler}/> 

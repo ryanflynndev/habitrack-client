@@ -30,12 +30,17 @@ class Timer extends React.Component {
         }, 1000)
     }
 
+    componentWillUnmount() {
+        clearInterval(this.myInterval)
+    }
+
     render () {
         const { minutes, seconds } = this.state
         return(
             <View>
                 <Text style={styles.textStyle}>Time Remaining: { minutes }:{ seconds < 10 ? `0${ seconds }` : seconds }</Text>
                 <TouchableOpacity onPress={() => {
+                    clearInterval(this.myInterval)
                     this.props.endOfTimerHandler(this.props.habit)
                 }}>
                     <Text>Cancel</Text>

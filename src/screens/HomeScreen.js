@@ -67,14 +67,10 @@ class HomeScreen extends React.Component {
             })            
         }).then(response => response.json())
         .then(updatedObj => {
-            console.log('The updated habit', updatedObj.id)
-            console.log('The updated habit', updatedObj)
             let newArray = [...this.state.habits]
             let found = newArray.find(habit => updatedObj.habit.id == habit.id)
-            console.log(found)
             found.title = updatedObj.habit.title
             found.minutes = updatedObj.habit.minutes
-            console.log(newArray)
             this.setState({
                 habits: newArray
             })
@@ -90,6 +86,7 @@ class HomeScreen extends React.Component {
     }
 
     endOfTimerHandler = (habit) => {
+        console.log('Are we hitting the end handler?')
         let previousState = this.state.showTimer
         let newArray = [...this.state.timedHabits, habit]
         this.setState({
@@ -109,8 +106,14 @@ class HomeScreen extends React.Component {
         }).then(response => response.json())
         .then(updatedHabit => {
             if(updatedHabit){
-                console.log(this.props.user.id)
                 this.props.userUpdateHandler(this.props.user)
+                let newHabitArray = [...this.state.habits]
+                let found = newHabitArray.find(habit => updatedHabit.habit.id == habit.id) 
+                found.run_streak = updatedHabit.habit.run_streak
+                found.time_spent = updatedHabit.habit.time_spent               
+                this.setState({
+                    habits: newHabitArray
+                })
             }
         })    
     }

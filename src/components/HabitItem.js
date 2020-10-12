@@ -12,10 +12,12 @@ class HabitItem extends React.Component {
     render() {
         return (
             <View>
-                <View style={styles.viewStyle}>
-                    <Text style={styles.habitStyle}>{this.props.habit.title}</Text>
-                    <Text style={styles.minutesStyle}>{this.props.habit.minutes} min.</Text>
-                </View>
+                <TouchableOpacity style={{backgroundColor: 'red'}} title='Timer' onPress={() => this.props.timerHandler(this.props.habit)}>
+                    <View style={styles.viewStyle}>
+                        <Text style={styles.habitStyle}>{this.props.habit.title}</Text>
+                        <Text style={styles.minutesStyle}>{this.props.habit.minutes} min.</Text>
+                    </View>
+                </TouchableOpacity>
                 <View style={styles.buttonViewStyle}>
                     <TouchableOpacity title='Edit' onPress={() => { 
                         let previousState = this.state.editable

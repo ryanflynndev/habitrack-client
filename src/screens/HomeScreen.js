@@ -3,11 +3,14 @@ import { Text, View, StyleSheet } from 'react-native';
 import CreateForm from '../components/CreateForm';
 import HabitList from '../components/HabitList'
 import API from '../constants/Api';
+import Timer from '../components/Timer'
 
 class HomeScreen extends React.Component {
 
     state = {
-        habits: this.props.user.habits
+        habits: this.props.user.habits,
+        showTimer: false,
+        timerHabit: {}
     }
 
     createHandler = (habitObj) => {
@@ -77,14 +80,30 @@ class HomeScreen extends React.Component {
         })
     }
 
+    timerHandler = (habit) => {
+        let previousState = this.state.showTimer
+        this.setState({
+            showTimer: !previousState,
+            timerHabit: habit
+        })
+    }
+
+    endOfTimerHandler = (habit) => {
+        let previousState = this.state.showTimer
+        this.setState({
+            showTimer: !previousState
+        })
+    }
+
 
     render () {
         return(
             <View>
-                <Text style={styles.textStyle}>We are in the home screen!</Text>
-                <CreateForm user={this.props.user} createHandler={this.createHandler}/>
-                <HabitList user={this.props.user} habits={this.state.habits} deleteHandler={this.deleteHandler} editHandler={this.editHandler}/>
-                
+                { this.state.showTimer ? <Timer habit={this.state.timerHabit} endOfTimerHandler={this.endOfTimerHandler}/> : <View>
+                    <Text style={styles.textStyle}>We are in the home screen!</Text>
+                    <CreateForm user={this.props.user} createHandler={this.createHandler}/>
+                    <HabitList user={this.props.user} habits={this.state.habits} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler}/> 
+                </View> }
             </View>
         )
     }

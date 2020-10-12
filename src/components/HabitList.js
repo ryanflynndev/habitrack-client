@@ -18,7 +18,7 @@ class HabitList extends React.Component {
                     data={this.props.habits}
                     renderItem={({item}) => {
                         console.log(item)
-                        return (<HabitItem habit={item} deleteHandler={this.props.deleteHandler} editHandler={this.props.editHandler}/>)
+                        return (<HabitItem habit={item} deleteHandler={this.props.deleteHandler} editHandler={this.props.editHandler} timerHandler={this.props.timerHandler}/>)
                     }}
                 />
             </View>

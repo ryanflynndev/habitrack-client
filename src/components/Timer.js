@@ -1,24 +1,45 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 
 class Timer extends React.Component {
+    
+    state = {
+        minutes: this.props.habit.minutes,
+        seconds: 0
+    }
 
-    timerCountdown = () => {
-        let time = this.props.habit.minutes
-        let timer = setInterval(() => {
-
-            time = time - 1
-            if (time <= 0){
-                clearInterval(timer)
-                this.props.endOfTimerHandler(this.props.habit)
+    componentDidMount () {
+        this.myInterval = setInterval(() => {
+            const { seconds, minutes } = this.state
+            if (seconds > 0) {
+                this.setState(({ seconds }) => ({
+                    seconds: seconds - 1
+                }))
             }
+            if (seconds === 0) {
+                if (minutes === 0) {
+                    clearInterval(this.myInterval)
+                    this.props.endOfTimerHandler(this.props.habit)
+                } else {
+                    this.setState(({ minutes }) => ({
+                        minutes: minutes - 1,
+                        seconds: 59
+                    }))
+                }
+            } 
         }, 1000)
     }
 
     render () {
+        const { minutes, seconds } = this.state
         return(
             <View>
-                {this.timerCountdown()}
+                <Text style={styles.textStyle}>Time Remaining: { minutes }:{ seconds < 10 ? `0${ seconds }` : seconds }</Text>
+                <TouchableOpacity onPress={() => {
+                    this.props.endOfTimerHandler(this.props.habit)
+                }}>
+                    <Text>Cancel</Text>
+                </TouchableOpacity>
             </View>
         )
     }

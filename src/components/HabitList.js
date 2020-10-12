@@ -1,42 +1,31 @@
 import React from 'react'
 import { Text, View, StyleSheet, FlatList, TouchableOpacity, TextInput } from 'react-native';
+import HabitItem from '../components/HabitItem'
 
 
-
-const HABITS = [
-    {title: "Running", minutes: 20},
-    {title: "Reading", minutes: 5},
-    {title: "Japanese", minutes: 10}
-]
 
 class HabitList extends React.Component {
 
 
-    render () {
 
+    render () {
         return (
             <View>
                 <FlatList
                     keyExtractor={(habit) => {
-                        return habit.title
+                        return `${habit.id}`
                     }}
-                    data={HABITS}
+                    data={this.props.habits}
                     renderItem={({item}) => {
-                        return <Text style={styles.habitStyle}>{item.title}</Text>
+                        console.log(item)
+                        return (<HabitItem habit={item} deleteHandler={this.props.deleteHandler} editHandler={this.props.editHandler}/>)
                     }}
                 />
-                <TextInput/>
             </View>
         )
     }
 }
 
-const styles = StyleSheet.create({
-    habitStyle: {
-        marginLeft: 20,
-        marginTop: 10,
-        fontSize: 32
-    }
-})
+
 
 export default HabitList

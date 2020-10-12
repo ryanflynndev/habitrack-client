@@ -1,4 +1,4 @@
-const API = 'https://curly-parrot-73.loca.lt';
+const API = 'https://popular-pig-48.loca.lt';
 
 
 export default API 

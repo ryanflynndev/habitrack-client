@@ -27,7 +27,7 @@ class HomeScreen extends React.Component {
         }   
         ).then(response => response.json())
         .then(newHabit => {
-            console.log(newHabit)
+            this.props.userUpdateHandler(this.props.user)
             let newArray = [...this.state.habits, newHabit.habit]
             this.setState({
                 habits: newArray
@@ -45,6 +45,7 @@ class HomeScreen extends React.Component {
         }).then(response => response.json())
         .then(deletedObj => {
             if(deletedObj.id === undefined) {
+                this.props.userUpdateHandler(this.props.user)
                 let newArray = this.state.habits.filter(habit => habit.id !== habitObj.id)
                 this.setState({
                     habits: newArray

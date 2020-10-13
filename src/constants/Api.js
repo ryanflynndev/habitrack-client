@@ -1,4 +1,4 @@
-const API = 'https://hungry-wasp-5.loca.lt';
+const API = 'https://slippery-bobcat-94.loca.lt';
 
 
 export default API 

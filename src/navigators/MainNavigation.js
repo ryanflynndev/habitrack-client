@@ -37,9 +37,28 @@ class MainNavigation extends React.Component {
 
     loginHandler = (text) => {
         let found = this.state.users.find(user => user.username === text)
+        console.log(found)
         if(found){
             this.setState({
                 user: found
+            })
+        } else {
+            fetch(`${API}/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    accepts: 'application/json'
+                },
+                body: JSON.stringify({
+                    username: text
+                })
+            }).then(response => response.json())
+            .then(newUser => {
+                if(newUser){
+                    this.setState({
+                        user: newUser.user
+                    })
+                }
             })
         }
         

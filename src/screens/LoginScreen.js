@@ -22,7 +22,7 @@ class LoginScreen extends React.Component {
                     style={styles.textInputStyle}
                 />
                 <Button 
-                    title="Log in" 
+                    title="Log In/Sign Up" 
                     onPress={() => this.props.loginHandler(this.state.username)}
                     />
             </View>

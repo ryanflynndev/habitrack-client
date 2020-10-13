@@ -68,6 +68,7 @@ class HomeScreen extends React.Component {
             })            
         }).then(response => response.json())
         .then(updatedObj => {
+            this.props.userUpdateHandler(this.props.user)
             let newArray = [...this.state.habits]
             let found = newArray.find(habit => updatedObj.habit.id == habit.id)
             found.title = updatedObj.habit.title

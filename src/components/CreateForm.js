@@ -39,7 +39,13 @@ class CreateForm extends React.Component {
                 />
                 <Button 
                     title="Create Habit" 
-                    onPress={() => this.props.createHandler({title: this.state.title, minutes: this.state.minutes, time_spent: 0, run_streak: 0, user_id: this.props.user.id})}
+                    onPress={() => {
+                        this.props.createHandler({title: this.state.title, minutes: this.state.minutes, time_spent: 0, run_streak: 0, user_id: this.props.user.id})
+                        this.setState({
+                            title: '',
+                            minutes: ''
+                        })
+                    }}
                     />
             </View>
         )

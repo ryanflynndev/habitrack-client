@@ -4,6 +4,7 @@ import CreateForm from '../components/CreateForm';
 import HabitList from '../components/HabitList'
 import API from '../constants/Api';
 import Timer from '../components/Timer'
+import SearchBar from '../components/SearchBar';
 
 class HomeScreen extends React.Component {
 
@@ -11,7 +12,8 @@ class HomeScreen extends React.Component {
         habits: this.props.user.habits,
         showTimer: false,
         timedHabit: {},
-        timedHabits: []
+        timedHabits: [],
+        searchValue: ''
     }
 
     createHandler = (habitObj) => {
@@ -120,14 +122,24 @@ class HomeScreen extends React.Component {
         })    
     }
 
+    searchHandler = (term) => {
+        this.setState({
+            searchValue: term
+        })  
+    }
+
+    filterHabits = () => {
+        return this.state.habits.filter(habit => habit.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
+    }    
+
 
     render () {
         return(
             <View>
                 { this.state.showTimer ? <Timer habit={this.state.timedHabit} endOfTimerHandler={this.endOfTimerHandler}/> : <View>
-                    <Text style={styles.textStyle}>We are in the home screen!</Text>
                     <CreateForm user={this.props.user} createHandler={this.createHandler}/>
-                    <HabitList user={this.props.user} habits={this.state.habits} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler}/> 
+                    <SearchBar searchValue={this.state.searchValue} searchHandler={this.searchHandler}/>
+                    <HabitList user={this.props.user} habits={this.filterHabits()} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler}/> 
                 </View> }
             </View>
         )
@@ -138,6 +150,12 @@ const styles = StyleSheet.create({
     textStyle: {
         alignSelf: 'center',
         marginTop: 50
+    },
+    headerStyle: {
+        marginTop: 10,
+        marginBottom: 30,
+        fontSize: 42,
+        marginLeft: 20
     }
 })
 

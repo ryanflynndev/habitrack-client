@@ -10,7 +10,7 @@ class HabitItem extends React.Component {
         disabled: false
     }
 
-    habitDoneHandler = () => {
+    buttonHandler = () => {
 
         //sort by most recent userHabit
 
@@ -18,15 +18,15 @@ class HabitItem extends React.Component {
             return userHabit.id === this.props.user.most_recent_user_habit.id
         })
         let now = new Date()
-        console.log(now)
+        console.log('we in habitdone', now)
         let oneDay = 60 * 60 * 24 * 1000
         let testTime = 30 * 1000
         let createdAt = mostRecent.time_created
-        console.log(createdAt)
-        if((now - createdAt) > testTime){
-            this.setState({
-                disabled: true
-            })
+        console.log(now - createdAt)
+        if((now - createdAt) < testTime){
+
+        } else {
+            this.props.timerHandler(this.props.habit)
         }
             
     }
@@ -34,7 +34,11 @@ class HabitItem extends React.Component {
     render() {
         return (
             <View>
-                <TouchableOpacity  title='Timer' onPress={() => this.props.timerHandler(this.props.habit)} disabled={false}>
+                <TouchableOpacity  title='Timer' 
+                onPress={() => {
+                    this.buttonHandler()
+                }} 
+                disabled={this.state.disabled}>
                     <View style={styles.viewStyle}>
                         <Text style={styles.habitStyle}>{this.props.habit.title}</Text>
                         <Text style={styles.minutesStyle}>{this.props.habit.minutes} min.</Text>

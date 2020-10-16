@@ -97,6 +97,7 @@ class HomeScreen extends React.Component {
             showTimer: !previousState,
             timedHabits: newArray
         })
+        this.dateCreated(habit)
         fetch(`${API}/habits/${habit.id}`, {
             method: 'PATCH',
             headers: {
@@ -132,6 +133,25 @@ class HomeScreen extends React.Component {
         return this.state.habits.filter(habit => habit.title.toLowerCase().includes(this.state.searchValue.toLowerCase()))
     }    
 
+    dateCreated = (habit) => {
+        console.log('this is the habit for userhabit', habit.id)
+        fetch(`${API}/user_habits`, 
+        {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+                "Accepts": "application/json"
+            },
+            body: JSON.stringify({
+                habit_id: habit.id,
+                user_id: this.props.user.id
+            })
+        }   
+        ).then(response => response.json())
+        .then(newDate => {
+            console.log('then new date', newDate)
+        })
+    }
 
     render () {
         return(

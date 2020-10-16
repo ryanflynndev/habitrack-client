@@ -12,22 +12,29 @@ class HabitItem extends React.Component {
 
     buttonHandler = () => {
 
-        //sort by most recent userHabit
-
         let mostRecent = this.props.user.user_habits.find((userHabit) => {
-            return userHabit.id === this.props.user.most_recent_user_habit.id
+            console.log(userHabit)
+            return (userHabit.id === this.props.user.most_recent_user_habit.id) && (this.props.habit.id === userHabit.habit_id)
         })
-        let now = new Date()
-        console.log('we in habitdone', now)
-        let oneDay = 60 * 60 * 24 * 1000
-        let testTime = 30 * 1000
-        let createdAt = mostRecent.time_created
-        console.log(now - createdAt)
-        if((now - createdAt) < testTime){
-
-        } else {
+        //sort by most recent userHabit
+        if(mostRecent === undefined){
             this.props.timerHandler(this.props.habit)
+        } else {
+
+            console.log(mostRecent)
+            let now = new Date()
+            console.log('we in habitdone', now)
+            let oneDay = 60 * 60 * 24 * 1000
+            let testTime = 30 * 1000
+            let createdAt = mostRecent.time_created
+            console.log(createdAt)
+            if((now - createdAt) < testTime){
+    
+            } else {
+                this.props.timerHandler(this.props.habit)
+            }
         }
+
             
     }
 

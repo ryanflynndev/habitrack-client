@@ -1,4 +1,4 @@
-const API = 'https://purple-earwig-15.loca.lt';
+const API = 'https://hot-fox-68.loca.lt';
 
 
-export default API 
+export default API          

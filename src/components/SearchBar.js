@@ -19,18 +19,19 @@ const styles = StyleSheet.create({
         backgroundColor: '#eeeeee',
         height: 30,
         borderRadius: 5,
-        marginHorizontal: 15,
+        marginHorizontal: 20,
         flexDirection: 'row',
-        marginBottom: 10
+        marginBottom: 20
     },
     inputStyle: {
         flex: 1,
-        fontSize: 18
+        fontSize: 18,
+        marginHorizontal: 10
     },
     iconStyle: {
         fontSize: 20,
         alignSelf: 'center',
-        marginHorizontal: 15
+        marginHorizontal: 0
     }
 })
 

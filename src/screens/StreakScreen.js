@@ -54,9 +54,10 @@ const styles = StyleSheet.create({
         fontSize: 22
     },
     runStreakStyle: {
-        marginLeft: 175,
+        marginLeft: 275,
         marginTop: 10,
-        fontSize: 22
+        fontSize: 22,
+        position: 'absolute'
     },
     viewStyle: {
         display: 'flex',

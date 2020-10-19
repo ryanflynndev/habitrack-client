@@ -1,5 +1,9 @@
 import React from 'react'
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons'; 
+import { AntDesign } from '@expo/vector-icons'
+import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 
 class Timer extends React.Component {
     
@@ -38,12 +42,14 @@ class Timer extends React.Component {
         const { minutes, seconds } = this.state
         return(
             <View>
-                <Text style={styles.textStyle}>Time Remaining: { minutes }:{ seconds < 10 ? `0${ seconds }` : seconds }</Text>
+                <Text style={styles.headerStyle}>{this.props.habit.title}</Text>
+                <MaterialCommunityIcons name="clock" size={250} color="#834bff" style={styles.timerStyle} />
+                <Text style={styles.timeStyle}>Time Remaining: { minutes }:{ seconds < 10 ? `0${ seconds }` : seconds }</Text>
                 <TouchableOpacity onPress={() => {
                     clearInterval(this.myInterval)
                     this.props.endOfTimerHandler(this.props.habit)
                 }}>
-                    <Text>Cancel</Text>
+                    <Text style={styles.cancelButtonStyle}>Cancel</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -51,9 +57,24 @@ class Timer extends React.Component {
 }
 
 const styles = StyleSheet.create({
-    textStyle: {
+    timeStyle: {
         alignSelf: 'center',
-        marginTop: 50
+        marginTop: 40,
+        fontSize: 24
+    },
+    headerStyle: {
+        alignSelf: 'center',
+        marginTop: 40,
+        fontSize: 42
+    },
+    timerStyle: {
+        alignSelf: 'center',
+        marginTop: 75
+    },
+    cancelButtonStyle: {
+        alignSelf: 'center',
+        marginTop: 30,
+        color: '#ff1744',
     }
 })
 

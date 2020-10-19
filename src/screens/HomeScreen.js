@@ -1,10 +1,13 @@
 import React from 'react'
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Modal } from 'react-native';
 import CreateForm from '../components/CreateForm';
 import HabitList from '../components/HabitList'
 import API from '../constants/Api';
 import Timer from '../components/Timer'
 import SearchBar from '../components/SearchBar';
+import { FontAwesome } from '@expo/vector-icons'; 
+import { Ionicons } from '@expo/vector-icons'; 
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 class HomeScreen extends React.Component {
 
@@ -13,7 +16,8 @@ class HomeScreen extends React.Component {
         showTimer: false,
         timedHabit: {},
         timedHabits: [],
-        searchValue: ''
+        searchValue: '',
+        canCreate: false
     }
 
     createHandler = (habitObj) => {
@@ -31,8 +35,10 @@ class HomeScreen extends React.Component {
         .then(newHabit => {
             this.props.userUpdateHandler(this.props.user)
             let newArray = [...this.state.habits, newHabit.habit]
+            let previous = this.state.canCreate
             this.setState({
-                habits: newArray
+                habits: newArray,
+                canCreate: !previous
             })
         })
     }
@@ -157,9 +163,20 @@ class HomeScreen extends React.Component {
         return(
             <View>
                 { this.state.showTimer ? <Timer habit={this.state.timedHabit} endOfTimerHandler={this.endOfTimerHandler}/> : <View>
-                    <CreateForm user={this.props.user} createHandler={this.createHandler}/>
+                    <Text style={styles.headerStyle}>My Daily Habits</Text>
+                    {/* <CreateForm user={this.props.user} createHandler={this.createHandler}/> */}
                     <SearchBar searchValue={this.state.searchValue} searchHandler={this.searchHandler}/>
                     <HabitList user={this.props.user} habits={this.filterHabits()} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler}/> 
+                    <TouchableOpacity 
+                        onPress={() => {
+                            let previousState = this.state.canCreate
+                            this.setState({
+                                canCreate: !previousState
+                            })}}
+                        >
+                        <Ionicons style={styles.addButtonStyle} name="md-add-circle" size={40} color='#834bff' />
+                    </TouchableOpacity>
+                    {this.state.canCreate ?  <CreateForm user={this.props.user} createHandler={this.createHandler}/> : null }
                 </View> }
             </View>
         )
@@ -172,10 +189,14 @@ const styles = StyleSheet.create({
         marginTop: 50
     },
     headerStyle: {
-        marginTop: 10,
+        marginTop: 75,
         marginBottom: 30,
         fontSize: 42,
         marginLeft: 20
+    },
+    addButtonStyle: {
+        marginLeft: 310,
+        marginTop: 10
     }
 })
 

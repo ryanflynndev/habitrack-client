@@ -7,13 +7,13 @@ class HabitItem extends React.Component {
         editable: false,
         editedTitle: this.props.habit.title,
         editedMinutes: `${this.props.habit.minutes}`,
-        disabled: false
+        disabled: false,
+        renderError: false
     }
 
     buttonHandler = () => {
 
         let mostRecent = this.props.user.user_habits.find((userHabit) => {
-            console.log(userHabit)
             return (userHabit.id === this.props.user.most_recent_user_habit.id) && (this.props.habit.id === userHabit.habit_id)
         })
         //sort by most recent userHabit
@@ -29,28 +29,94 @@ class HabitItem extends React.Component {
             let createdAt = mostRecent.time_created
             console.log(createdAt)
             if((now - createdAt) < testTime){
-    
+                this.setState({
+                    disabled: true
+                })
+                this.setState({
+                    renderError: true
+                })
+                let counter = 0
+                this.myInterval = setInterval(() => {
+                    
+                    if(counter === 1){
+                        clearInterval(this.myInterval)
+                        this.setState({
+                            renderError: false
+                        })
+                        this.setState({
+                            disabled: false
+                        })   
+                    }
+                    counter += 1
+  
+                }, 1000)
+            
+
             } else {
+
                 this.props.timerHandler(this.props.habit)
+
             }
         }
 
             
     }
 
+//     componentDidMount() {
+
+//         let mostRecent = this.props.user.user_habits.find((userHabit) => {
+//             return (userHabit.id === this.props.user.most_recent_user_habit.id) && (this.props.habit.id === userHabit.habit_id)
+//         })
+//         if(mostRecent === undefined){
+            
+//         } else {
+
+//             console.log(mostRecent)
+//             let now = new Date()
+//             console.log('we in habitdone', now)
+//             let oneDay = 60 * 60 * 24 * 1000
+//             let testTime = 30 * 1000
+//             let createdAt = mostRecent.time_created
+//             console.log(createdAt)
+//             if((now - createdAt) < testTime){
+//                 let previous = this.state.disabled
+//                 this.setState({
+//                     disabled: !previous
+//                 })
+//             }
+
+//     }
+// }
+
     render() {
+
         return (
             <View>
-                <TouchableOpacity  title='Timer' 
-                onPress={() => {
-                    this.buttonHandler()
-                }} 
-                disabled={this.state.disabled}>
-                    <View style={styles.viewStyle}>
-                        <Text style={styles.habitStyle}>{this.props.habit.title}</Text>
-                        <Text style={styles.minutesStyle}>{this.props.habit.minutes} min.</Text>
-                    </View>
-                </TouchableOpacity>
+                { this.state.disabled ? 
+                    <TouchableOpacity  title='Timer' 
+                    onPress={() => {
+                        this.buttonHandler()
+                    }} 
+                    >
+                        <View style={styles.viewStyle}>
+                            <Text style={styles.disabledHabitStyle}>{this.props.habit.title}</Text>
+                            <Text style={styles.disabledMinutesStyle}>{this.props.habit.minutes} min.</Text>
+                        </View>
+                    </TouchableOpacity> 
+                    
+                    :
+
+                    <TouchableOpacity  title='Timer' 
+                    onPress={() => {
+                        this.buttonHandler()
+                    }} 
+                    >
+                        <View style={styles.viewStyle}>
+                            <Text style={styles.habitStyle}>{this.props.habit.title}</Text>
+                            <Text style={styles.minutesStyle}>{this.props.habit.minutes} min.</Text>
+                        </View>
+                    </TouchableOpacity> 
+                }
                 <View style={styles.buttonViewStyle}>
                     <TouchableOpacity title='Edit' onPress={() => { 
                         let previousState = this.state.editable
@@ -80,7 +146,7 @@ class HabitItem extends React.Component {
                         <Text style={styles.editButtonStyle}>Submit</Text>
                     </TouchableOpacity>
                 </View> : null}
-                
+                {this.state.renderError ? <Text style={styles.errorStyle}>You already did that habit today good job!</Text> : null}
             </View>
         )
     }
@@ -129,7 +195,28 @@ const styles = StyleSheet.create({
         height: 30,
         width: 120,
         backgroundColor: '#eeeeee'
+    },
+    disabledHabitStyle: {
+        marginLeft: 20,
+        marginTop: 10,
+        fontSize: 22,
+        color: 'grey'
+    },
+    disabledMinutesStyle: {
+        marginLeft: 275,
+        marginTop: 10,
+        fontSize: 22,
+        position: 'absolute',
+        color: 'grey'
+    },
+    errorStyle: {
+        alignSelf: 'center',
+        fontSize: 16,
+        marginTop: 20,
+        marginBottom: 20,
+        color: '#834bff'
     }
+    
 })
 
 export default HabitItem

@@ -17,7 +17,7 @@ class HomeScreen extends React.Component {
         timedHabit: {},
         timedHabits: [],
         searchValue: '',
-        canCreate: false
+        canCreate: false,
     }
 
     createHandler = (habitObj) => {
@@ -101,7 +101,8 @@ class HomeScreen extends React.Component {
         let newArray = [...this.state.timedHabits, habit]
         this.setState({
             showTimer: !previousState,
-            timedHabits: newArray
+            timedHabits: newArray,
+            
         })
         this.dateCreated(habit)
         fetch(`${API}/habits/${habit.id}`, {

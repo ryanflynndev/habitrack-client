@@ -1,4 +1,4 @@
-const API = 'https://hot-fox-68.loca.lt';
+const API = 'https://moody-bobcat-66.loca.lt';
 
 
 export default API          

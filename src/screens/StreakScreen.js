@@ -9,6 +9,8 @@ class StreakScreen extends React.Component {
         searchValue: ''
     }
 
+    
+
     searchHandler = (term) => {
         this.setState({
             searchValue: term

@@ -17,11 +17,11 @@ class HomeScreen extends React.Component {
         timedHabit: {},
         timedHabits: [],
         searchValue: '',
-        canCreate: false
+        canCreate: false,
+        userHabits: this.props.user.user_habits
     }
 
     createHandler = (habitObj) => {
-        console.log(habitObj)
         fetch(`${API}/habits`, 
         {
             method: 'POST',
@@ -103,7 +103,8 @@ class HomeScreen extends React.Component {
             showTimer: !previousState,
             timedHabits: newArray
         })
-        this.dateCreated(habit)
+        this.dateCreated(habit)    
+        
         fetch(`${API}/habits/${habit.id}`, {
             method: 'PATCH',
             headers: {
@@ -126,7 +127,8 @@ class HomeScreen extends React.Component {
                     habits: newHabitArray
                 })
             }
-        })    
+        })
+        
     }
 
     searchHandler = (term) => {
@@ -140,7 +142,6 @@ class HomeScreen extends React.Component {
     }    
 
     dateCreated = (habit) => {
-        console.log('this is the habit for userhabit', habit.id)
         fetch(`${API}/user_habits`, 
         {
             method: 'POST',
@@ -155,7 +156,12 @@ class HomeScreen extends React.Component {
         }   
         ).then(response => response.json())
         .then(newDate => {
-            console.log('then new date', newDate)
+            console.log(this.state.userHabits)
+            let newArray = [...this.state.userHabits, newDate]
+            this.setState({
+                userHabits: newArray
+            })
+            this.props.userUpdateHandler(this.props.user)
         })
     }
 
@@ -166,7 +172,7 @@ class HomeScreen extends React.Component {
                     <Text style={styles.headerStyle}>My Daily Habits</Text>
                     {/* <CreateForm user={this.props.user} createHandler={this.createHandler}/> */}
                     <SearchBar searchValue={this.state.searchValue} searchHandler={this.searchHandler}/>
-                    <HabitList user={this.props.user} habits={this.filterHabits()} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler}/> 
+                    <HabitList user={this.props.user} habits={this.filterHabits()} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler} userUpdateHandler={this.props.userUpdateHandler} userHabits={this.state.userHabits}/> 
                     <TouchableOpacity 
                         onPress={() => {
                             let previousState = this.state.canCreate

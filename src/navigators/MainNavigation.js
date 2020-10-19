@@ -37,7 +37,6 @@ class MainNavigation extends React.Component {
 
     loginHandler = (text) => {
         let found = this.state.users.find(user => user.username === text)
-        console.log(found)
         if(found){
             this.setState({
                 user: found
@@ -68,7 +67,7 @@ class MainNavigation extends React.Component {
         fetch(`${API}/users/${userObj.id}`)
         .then(response => response.json())
         .then(theUser => {
-            console.log(theUser)
+            
             if(theUser) {
                 this.setState({
                     user: theUser.user

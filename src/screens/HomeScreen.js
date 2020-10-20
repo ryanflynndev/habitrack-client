@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, StyleSheet, Modal } from 'react-native';
+import { Text, View, StyleSheet, Modal, ScrollView } from 'react-native';
 import CreateForm from '../components/CreateForm';
 import HabitList from '../components/HabitList'
 import API from '../constants/Api';
@@ -8,6 +8,12 @@ import SearchBar from '../components/SearchBar';
 import { FontAwesome } from '@expo/vector-icons'; 
 import { Ionicons } from '@expo/vector-icons'; 
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { Feather } from '@expo/vector-icons';
+import { Entypo } from '@expo/vector-icons'; 
+import { LogBox } from 'react-native';
+import { AntDesign } from '@expo/vector-icons'; 
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 class HomeScreen extends React.Component {
 
@@ -18,6 +24,7 @@ class HomeScreen extends React.Component {
         timedHabits: [],
         searchValue: '',
         canCreate: false,
+        modalVisible: false
     }
 
     createHandler = (habitObj) => {
@@ -162,24 +169,73 @@ class HomeScreen extends React.Component {
 
     render () {
         return(
-            <View>
+            
+            <ScrollView>
                 { this.state.showTimer ? <Timer habit={this.state.timedHabit} endOfTimerHandler={this.endOfTimerHandler}/> : <View>
                     <Text style={styles.headerStyle}>My Daily Habits</Text>
                     {/* <CreateForm user={this.props.user} createHandler={this.createHandler}/> */}
                     <SearchBar searchValue={this.state.searchValue} searchHandler={this.searchHandler}/>
-                    <HabitList user={this.props.user} habits={this.filterHabits()} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler}/> 
-                    <TouchableOpacity 
-                        onPress={() => {
-                            let previousState = this.state.canCreate
-                            this.setState({
-                                canCreate: !previousState
-                            })}}
-                        >
-                        <Ionicons style={styles.addButtonStyle} name="md-add-circle" size={40} color='#834bff' />
-                    </TouchableOpacity>
-                    {this.state.canCreate ?  <CreateForm user={this.props.user} createHandler={this.createHandler}/> : null }
+                {/* <ScrollView> */}
+                    <HabitList user={this.props.user} habits={this.filterHabits()} deleteHandler={this.deleteHandler} editHandler={this.editHandler} timerHandler={this.timerHandler}/>
+                    <View style={styles.buttonViewStyle}>
+                        
+                        <TouchableOpacity
+                            onPress={() => {
+                                let previous = this.state.modalVisible
+                                this.setState({
+                                    modalVisible: !previous
+                                })
+                            }}
+                            >
+                                <Entypo name="info-with-circle" size={34} color="#834bff" style={styles.infoButtonStyle} />
+                            </TouchableOpacity>
+                            <View style={styles.modalStyle}>
+                                <Modal
+                                    animationType="slide"
+                                    transparent={false}
+                                    visible={this.state.modalVisible}
+                                    
+                                    onRequestClose={() => {
+                                        Alert.alert("Modal has been closed.");
+                                    }}
+                                >   
+                                    <TouchableOpacity
+                                    onPress={() => {
+                                        let previous = this.state.modalVisible
+                                        this.setState({
+                                            modalVisible: !previous
+                                        })  
+                                    }}
+                                    >
+                                        <AntDesign name="closecircle" size={24} style={styles.exitButtonStyle} />
+                                    </TouchableOpacity>
+                                    
+                                    <Text style={styles.modalHeaderStyle}>Getting Started</Text>
+                                    <Feather style={styles.logoStyle} name="book-open" size={100} color="#834bff" />
+                                    <Text style={styles.paragraphStyle}>Habitrack is a habit tracking app that is designed to keep you on top of your daily habits.</Text>
+                                    <Text style={styles.paragraphStyle}>Habitrack works on a 24 hour cycle system where each habit is tracked by daily completion. </Text>
+                                    <Text style={styles.paragraphStyle}>To get started tap the "plus" button to create a habit. Here you will enter the name of the habit and the amount of minutes you want to do the habit each day. </Text>
+                                    <Text style={styles.paragraphStyle}>After the habit has been created, you can tap the habit when you are ready to do that habit. This will bring up a timer screen which when finished, will add to your run streak and minutes spent for that particular habit. </Text>
+                                    <Text style={styles.paragraphStyle}>If you ever need to edit or delete a habit make sure to tap the edit or delete buttons on the bottom of each habit. </Text>
+                                    
+                                </Modal>
+                            </View>
+                            <TouchableOpacity 
+                                onPress={() => {
+                                    let previousState = this.state.canCreate
+                                    this.setState({
+                                        canCreate: !previousState
+                                    })}}
+                                >
+                                <Ionicons style={styles.addButtonStyle} name="md-add-circle" size={40} color='#834bff' />
+                            </TouchableOpacity>
+                        </View> 
+                            {this.state.canCreate ?  <CreateForm user={this.props.user} createHandler={this.createHandler}/> : null }
+                            
+                    
+                    {/* </ScrollView> */}
                 </View> }
-            </View>
+            </ScrollView>
         )
     }
 }
@@ -196,8 +252,41 @@ const styles = StyleSheet.create({
         marginLeft: 20
     },
     addButtonStyle: {
-        marginLeft: 310,
-        marginTop: 10
+        marginLeft: 270,
+        marginTop: 10,
+        
+    },
+    modalHeaderStyle: {
+        marginTop: 10,
+        marginBottom: 10,
+        fontSize: 32,
+        marginLeft: 20,
+        alignSelf: 'center'
+    },
+    logoStyle: {
+        alignSelf: 'center',
+        marginTop: 20
+    },
+    paragraphStyle: {
+        marginLeft: 10,
+        marginRight: 10,
+        fontSize: 16,
+        marginTop: 20,
+        
+    },
+    buttonViewStyle: {
+        display: 'flex',
+        flexDirection: 'row'
+    },
+    infoButtonStyle: {
+        marginLeft: 20,
+        marginTop: 14,
+
+    },
+    exitButtonStyle: {
+        color: '#ff1744',
+        marginLeft: 10,
+        marginTop: 30
     }
 })
 

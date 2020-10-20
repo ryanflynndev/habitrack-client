@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
         alignSelf: "center",
         marginTop: 22,
         fontSize: 20,
-        color: '#834bff'
+        color: '#834bff',
+        marginBottom: 20
     }
 })
 

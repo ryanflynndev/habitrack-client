@@ -1,7 +1,10 @@
 import React from 'react'
-import { Text, View, StyleSheet, FlatList } from 'react-native';
+import { Text, View, StyleSheet, FlatList, ScrollView } from 'react-native';
 import SearchBar from '../components/SearchBar';
 import API from '../constants/Api'
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
 
 class StreakScreen extends React.Component {
 
@@ -21,13 +24,14 @@ class StreakScreen extends React.Component {
 
     render () {
         return(
-            <View>
+            <ScrollView>
                 <Text style={styles.headerStyle}>My Run Streaks</Text>
                 <SearchBar searchValue={this.state.searchValue} searchHandler={this.searchHandler}/>
                 <FlatList
                     keyExtractor={(habit) => {
                         return `${habit.id}`
                     }}
+                    scrollEnabled={false}
                     data={this.filterHabits()}
                     renderItem={({item}) => {
                         return (
@@ -37,7 +41,7 @@ class StreakScreen extends React.Component {
                             </View>)
                     }}
                 />
-            </View>            
+            </ScrollView>            
 
         )
     }
